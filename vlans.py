@@ -20,7 +20,7 @@ tn.write(b"cisco\n")
 tn.write(b"conf t\n")
 
 
-for i in range(10,40,10):
+for i in range(10,50,10):
     tn.write(b"interface vlan " + str(i).encode('ascii') + b"\n")
     tn.write(b"ip address 172.16." + str(i).encode('ascii') + b".1 255.255.255.0 \n")
     tn.write(b"no shutdown\n")
@@ -34,7 +34,11 @@ for i in range(10,40,10):
         tn.write(b"name STAFF \n")
     if i==30:
         tn.write(b"vlan " + str(i).encode('ascii') + b"\n")
-        tn.write(b"name STUDENTS \n")  
+        tn.write(b"name STUDENTS \n")
+
+    if i==40:
+        tn.write(b"vlan " + str(i).encode('ascii') + b"\n")
+        tn.write(b"name RESEARCH \n")  
 
 
 
