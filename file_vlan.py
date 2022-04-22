@@ -3,20 +3,21 @@ import telnetlib
 import time
 
 #open devices file in read mode
-file = open('devices.txt','r') 
+#file = open('devices.txt','r') 
+devices = ['192.168.123.100','192.168.123.102','192.168.123.103']
 
-for line in file:
+for ip_address in devices:
     #read ip line by line, stripping white space
-    line=line.strip()         
+    ip_address=ip_address.strip()         
     
     #split ip address into array r after each .
-    r=line.split('.')
+    r=ip_address.split('.')
     
     #take the last number of the ip address
     a=r[3]
 
 
-    host = line
+    host = ip_address
     user = "admin"
     password = "cisco"
     tn = telnetlib.Telnet(host)
@@ -45,7 +46,7 @@ for line in file:
 
         if i==10:
             tn.write(b"vlan " + str(i).encode('ascii') + b"\n")
-            tn.write(b"name MANAGEMENT \n")
+            tn.write(b"name ADMISSION_TEAM \n")
         if i==20:
             tn.write(b"vlan " + str(i).encode('ascii') + b"\n")
             tn.write(b"name STAFF \n")

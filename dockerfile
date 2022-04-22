@@ -1,7 +1,8 @@
 FROM python
 
-COPY vlans.py /home/myapp
+COPY file_vlan.py /home/myapp
 
-CMD python /home/myapp vlans.py
+CMD python /home/myapp file_vlan.py
+
 
 
