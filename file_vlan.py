@@ -1,20 +1,16 @@
-import os
 import telnetlib
 import time
 
-#open devices file in read mode
-#file = open('devices.txt','r') 
+ 
 devices = ['192.168.123.100','192.168.123.102','192.168.123.103']
 
 for ip_address in devices:
-    #read ip line by line, stripping white space
-    ip_address=ip_address.strip()         
     
-    #split ip address into array r after each .
-    r=ip_address.split('.')
+    #split ip address into array after each .
+    split_ip=ip_address.split('.')
     
     #take the last number of the ip address
-    a=r[3]
+    a=split_ip[3]
 
 
     host = ip_address
@@ -34,10 +30,6 @@ for ip_address in devices:
 
     
     for i in range(10,50,10):
-        #print("interface vlan " + str(i) )
-        #print("ip address 192.168." + str(i) + "." + a )
-        #print("\n")
-
         tn.write(b"interface vlan " + str(i).encode('ascii') + b"\n")
         tn.write(b"ip address 172.16." + str(i).encode('ascii') + b"." + a.encode('ascii') +b" 255.255.255.0 \n")
         tn.write(b"no shutdown\n")
