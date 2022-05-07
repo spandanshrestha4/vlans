@@ -1,74 +1,65 @@
 import telnetlib
-import time
+from netmiko import ConnectHandler
 
- 
-devices = ['192.168.123.100','192.168.123.101','192.168.123.102','192.168.123.103']
+devices = ["192.168.123.100",
+           "192.168.123.101",
+           "192.168.123.102",
+           "192.168.123.103",
+           "192.168.123.50" ]
 
 for ip_address in devices:
+    all_devices = {
+    "device_type": "cisco_ios",
+    "ip":ip_address,
+    "username": "admin",
+    "password": "cisco",
+    "secret": "cisco@123"
+    }
+
+    net_connect = ConnectHandler(**all_devices)
+    net_connect.enable()
     
     #split ip address into array after each .
     split_ip=ip_address.split('.')
     
     #take the last number of the ip address
-    a=split_ip[3]
+    network_ip=split_ip[3]
 
 
-    host = ip_address
-    user = "admin"
-    password = "cisco"
-    tn = telnetlib.Telnet(host)
-
-    tn.read_until(b"Username: ")
-    tn.write(user.encode('ascii') + b"\n")
-
-    tn.read_until(b"Password: ")
-    tn.write(password.encode('ascii') + b"\n")
-
-    tn.write(b"en\n")
-    tn.write(b"cisco\n")
-    tn.write(b"conf t\n")
-
-    
+   
     for i in range(10,50,10):
-        tn.write(b"interface vlan " + str(i).encode('ascii') + b"\n")
-        tn.write(b"ip address 172.16." + str(i).encode('ascii') + b"." + a.encode('ascii') +b" 255.255.255.0 \n")
-        tn.write(b"no shutdown\n")
-        tn.write(b"exit\n")  
+        config_commands1 = ["interface vlan " + str(i),
+                            "ip address 172.16." + 
+                            str(i)+ "." +
+                            network_ip +
+                            " 255.255.255.0",
+                            "no shutdown",
+                            "exit"]
+
+        vlan_ip = net_connect.send_config_set(config_commands1)
+        print(vlan_ip)
+
+        
+        
+    config_commands2 = ["vlan 10",
+                        "name Admission",
+                        
+                        "vlan 20",
+                        "name Staff",
+                        
+                        "vlan 30",
+                        "name Students",
+                        
+                        "vlan 40",
+                        "name R&D" ]
+
+    vlan_name = net_connect.send_config_set(config_commands2)
+    print(vlan_name)
 
 
-        if i==10:
-            tn.write(b"vlan " + str(i).encode('ascii') + b"\n")
-            tn.write(b"name ADMISSION_TEAM \n")
-        if i==20:
-            tn.write(b"vlan " + str(i).encode('ascii') + b"\n")
-            tn.write(b"name STAFF \n")
-        if i==30:
-            tn.write(b"vlan " + str(i).encode('ascii') + b"\n")
-            tn.write(b"name STUDENTS \n")
-
-        if i==40:
-            tn.write(b"vlan " + str(i).encode('ascii') + b"\n")
-            tn.write(b"name RESEARCH \n")    
-
-
-    tn.write(b"exit\n")
-    tn.write(b"exit\n")
-    tn.write(b"copy r st\n")
-    time.sleep(.5)
-    tn.write(b"\n")
-    tn.write(b"exit\n")
-
-
-
-    print(tn.read_all().decode('ascii'))
-
-
-
+    save = net_connect.save_config()
+    print(save)
 
 
 
-
-    
-
-
-
+net_connect.disconnect()
