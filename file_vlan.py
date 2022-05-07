@@ -1,4 +1,5 @@
 import telnetlib
+import time
 from netmiko import ConnectHandler
 
 devices = ["192.168.123.100",
@@ -13,8 +14,8 @@ for ip_address in devices:
     "ip":ip_address,
     "username": "admin",
     "password": "cisco",
-    "secret": "cisco@123"
-    }
+    "secret": "cisco@123",
+     }
 
     net_connect = ConnectHandler(**all_devices)
     net_connect.enable()
@@ -28,7 +29,7 @@ for ip_address in devices:
 
    
     for i in range(10,50,10):
-        config_commands1 = ["interface vlan " + str(i),
+        commands_vlan_ip = ["interface vlan " + str(i),
                             "ip address 172.16." + 
                             str(i)+ "." +
                             network_ip +
@@ -36,12 +37,12 @@ for ip_address in devices:
                             "no shutdown",
                             "exit"]
 
-        vlan_ip = net_connect.send_config_set(config_commands1)
+        vlan_ip = net_connect.send_config_set(commands_vlan_ip)
         print(vlan_ip)
 
         
         
-    config_commands2 = ["vlan 10",
+    commands_vlan_name = ["vlan 10",
                         "name Admission",
                         
                         "vlan 20",
@@ -53,7 +54,7 @@ for ip_address in devices:
                         "vlan 40",
                         "name R&D" ]
 
-    vlan_name = net_connect.send_config_set(config_commands2)
+    vlan_name = net_connect.send_config_set(commands_vlan_name)
     print(vlan_name)
 
 
