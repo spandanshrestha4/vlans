@@ -58,8 +58,8 @@ for ip_address in devices:
     print(vlan_name)
 
 
-    save = net_connect.save_config()
-    print(save)
+   # save = net_connect.save_config()
+    #print(save)
 
 
 
