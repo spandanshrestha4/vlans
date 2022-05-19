@@ -7,8 +7,9 @@ devices = ["192.168.123.100",
            "192.168.123.50" ]
 
 #devices = ["192.168.123.100","192.168.123.101","192.168.123.102","192.168.123.103", "192.168.123.50" ]
-#just checking
+
 for ip_address in devices:
+
     all_devices = {
     "device_type": "cisco_ios",
     "ip":ip_address,
